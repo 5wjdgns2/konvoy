@@ -1,0 +1,19 @@
+   cluster.yaml 파일에 아래와 같은 문장 추가
+   
+   - name: dex
+      enabled: true
+      values: |
+        config:
+          staticPasswords:
+          - email: developer    //새로운 username 추가
+            hash: $2b$10$YbHKhbnBuYYZUvc3AHy0LuUKlLygHByXt5zbv/gOuZVQMsH80W0Y2
+            username: developer
+            userID: fe3833bb-0fe7-4cba-bec8-78c0d2aa2aab
+          - email: brave_chandrasekhar    //기존 username pw 변경
+            #hash: $2a$10$b.Db5Pvwb/uvTyxcqHNy0.2z1kW50tG4iAfu2ngbJaP/3SMlkFG/q
+            hash: $2a$10$FKYFJtR/4KwRJcOUaaa8MOXSD8Sa05xEM2XdtJpPbMqy.6/m7fwp2
+            username: brave_chandrasekhar
+            userID: da2e6f1b-5034-40d3-8f9e-a8243acd1030
+            
+ 
+ 저장 후 ./konvoy deploy addons 실행 
