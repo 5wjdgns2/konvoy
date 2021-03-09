@@ -1,4 +1,5 @@
-   cluster.yaml 파일에 아래와 같은 문장 추가
+   cluster.yaml 파일에 아래와 같은 문장 추가 
+   *hash 코드는 https://8gwifi.org/bccrypt.jsp 다음 사이트에서 적용
    
    - name: dex
       enabled: true
@@ -6,7 +7,7 @@
         config:
           staticPasswords:
           - email: developer    //새로운 username 추가
-            hash: $2b$10$YbHKhbnBuYYZUvc3AHy0LuUKlLygHByXt5zbv/gOuZVQMsH80W0Y2
+            hash: $2b$10$YbHKhbnBuYYZUvc3AHy0LuUKlLygHByXt5zbv/gOuZVQMsH80W0Y2  //pw에 대한 hash 값
             username: developer
             userID: fe3833bb-0fe7-4cba-bec8-78c0d2aa2aab
           - email: brave_chandrasekhar    //기존 username pw 변경
