@@ -1,0 +1,121 @@
+kind: ClusterConfiguration
+apiVersion: konvoy.mesosphere.io/v1beta1
+metadata:
+  name: k8s-test
+  creationTimestamp: "2021-03-08T06:47:39Z"
+spec:
+  imageRegistries:
+    - server: https://www.kb-sys.co.kr
+      username: "admin"
+      password: "admin1234"
+      default: true
+  kubernetes:
+    version: 1.17.16
+    controlPlane:
+      controlPlaneEndpointOverride: "192.168.0.75:6443"
+      certificate: {}
+      keepalived: {}
+    networking:
+      podSubnet: 10.0.0.10/16
+      serviceSubnet: 10.0.0.0/18
+    cloudProvider:
+      provider: none
+    admissionPlugins:
+      enabled:
+      - AlwaysPullImages
+      - NodeRestriction
+  containerNetworking:
+    calico:
+      version: v3.13.5
+      encapsulation: ipip
+      mtu: 1480
+  containerRuntime:
+    containerd:
+      version: 1.3.9
+  osPackages:
+    enableAdditionalRepositories: true
+  nodePools:
+  - name: worker
+  addons:
+  - configRepository: https://github.com/mesosphere/kubernetes-base-addons
+    configVersion: stable-1.17-2.5.0
+    addonsList:
+    - name: cert-manager
+      enabled: true
+    - name: dashboard
+      enabled: true
+    - name: defaultstorageclass-protection
+      enabled: true
+    - name: dex
+      enabled: true
+    - name: dex
+      enabled: true
+      values: |
+        config:
+          staticPasswords:
+          - email: developer
+            hash: $2b$10$YbHKhbnBuYYZUvc3AHy0LuUKlLygHByXt5zbv/gOuZVQMsH80W0Y2
+            username: developer
+            userID: fe3833bb-0fe7-4cba-bec8-78c0d2aa2aab
+          - email: brave_chandrasekhar
+            #hash: $2a$10$b.Db5Pvwb/uvTyxcqHNy0.2z1kW50tG4iAfu2ngbJaP/3SMlkFG/q
+            hash: $2a$10$FKYFJtR/4KwRJcOUaaa8MOXSD8Sa05xEM2XdtJpPbMqy.6/m7fwp2
+            username: brave_chandrasekhar
+            userID: da2e6f1b-5034-40d3-8f9e-a8243acd1030
+    - name: dex-k8s-authenticator
+      enabled: true
+    - name: elasticsearch
+      enabled: false
+    - name: elasticsearch-curator
+      enabled: false
+    - name: elasticsearchexporter
+      enabled: false
+    - name: external-dns
+      enabled: false
+    - name: flagger
+      enabled: false
+    - name: fluentbit
+      enabled: false
+    - name: gatekeeper
+      enabled: true
+    - name: istio # Istio is currently in Preview
+      enabled: false
+    - name: kibana
+      enabled: false
+    - name: konvoyconfig
+      enabled: true
+    - name: kube-oidc-proxy
+      enabled: true
+    - name: localvolumeprovisioner
+      enabled: true
+    - name: metallb
+      enabled: true
+      values: |
+        configInline:
+          address-pools:
+          - name: default
+            protocol: layer2
+            # configure addresses for your network
+            addresses: [192.168.0.76-192.168.0.78]
+    - name: nvidia
+      enabled: false
+    - name: opsportal
+      enabled: true
+    - name: prometheus
+      enabled: false
+    - name: prometheusadapter
+      enabled: false
+    - name: reloader
+      enabled: true
+    - name: traefik
+      enabled: true
+    - name: traefik-forward-auth
+      enabled: true
+    - name: velero
+      enabled: true
+  - configRepository: https://github.com/mesosphere/kubeaddons-kommander
+    configVersion: stable-1.17-1.1.2
+    addonsList:
+    - name: kommander
+      enabled: false
+  version: v1.5.5
